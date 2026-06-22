@@ -91,12 +91,12 @@ export async function explainCode(
   languageId: string,
   signal: AbortSignal,
 ): Promise<Explanation> {
-  const config = vscode.workspace.getConfiguration('codeExplainer');
+  const config = vscode.workspace.getConfiguration('clarify');
   const apiKey = config.get<string>('openaiApiKey')?.trim();
   const model = config.get<string>('model') ?? 'gpt-4o';
 
   if (!apiKey) {
-    throw new Error('API key not set — run "Code Explainer: Open Settings"');
+    throw new Error('API key not set — run "Clarify: Open Settings"');
   }
 
   const body = JSON.stringify({

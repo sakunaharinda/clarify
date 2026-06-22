@@ -55,7 +55,7 @@ export class ExplanationHoverProvider implements vscode.HoverProvider {
     }
 
     lines.push('\n---');
-    lines.push('$(comment) [Insert as comment](command:code-explainer.insertComment)');
+    lines.push('$(comment) [Insert as comment](command:clarify.insertComment)');
 
     const md = new vscode.MarkdownString(lines.join('\n'));
     md.isTrusted = true;

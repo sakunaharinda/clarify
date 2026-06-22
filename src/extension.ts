@@ -7,7 +7,7 @@ import { insertExplanationAsComment } from './commentInserter';
 export function activate(context: vscode.ExtensionContext): void {
   const decorations = new DecorationManager();
   const hoverProvider = new ExplanationHoverProvider();
-  const log = vscode.window.createOutputChannel('Code Explainer');
+  const log = vscode.window.createOutputChannel('Clarify');
   context.subscriptions.push(log);
 
   let abortController: AbortController | undefined;
@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext): void {
   // ── Explain command (Shift+E) ─────────────────────────────────────────────
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('code-explainer.explain', async () => {
+    vscode.commands.registerCommand('clarify.explain', async () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) { return; }
 
@@ -74,7 +74,7 @@ export function activate(context: vscode.ExtensionContext): void {
   // ── Insert comment command ────────────────────────────────────────────────
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('code-explainer.insertComment', async () => {
+    vscode.commands.registerCommand('clarify.insertComment', async () => {
       const editor = pendingEditor ?? vscode.window.activeTextEditor;
       if (!editor || !pendingExplanation || !pendingRange) {
         vscode.window.showWarningMessage('No explanation available — select code and press Shift+E first.');
@@ -92,8 +92,8 @@ export function activate(context: vscode.ExtensionContext): void {
   // ── Open settings command ─────────────────────────────────────────────────
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('code-explainer.openSettings', () => {
-      vscode.commands.executeCommand('workbench.action.openSettings', 'codeExplainer');
+    vscode.commands.registerCommand('clarify.openSettings', () => {
+      vscode.commands.executeCommand('workbench.action.openSettings', 'clarify');
     }),
   );
 

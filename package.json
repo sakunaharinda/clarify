@@ -1,8 +1,21 @@
 {
-  "name": "code-explainer",
-  "displayName": "Code Explainer",
-  "description": "AI assistant that explains your code inline using OpenAI.",
+  "name": "clarify",
+  "displayName": "Clarify",
+  "description": "AI-powered inline code explanations using OpenAI.",
+  "publisher": "sakunaharinda",
   "version": "0.0.1",
+  "license": "MIT",
+  "icon": "assets/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sakunaharinda/code-explainer"
+  },
+  "keywords": [
+    "ai",
+    "code explanation",
+    "inline comments",
+    "productivity"
+  ],
   "engines": {
     "vscode": "^1.125.0"
   },
@@ -14,38 +27,38 @@
   "contributes": {
     "commands": [
       {
-        "command": "code-explainer.explain",
+        "command": "clarify.explain",
         "title": "Explain Selected Code",
-        "category": "Code Explainer"
+        "category": "Clarify"
       },
       {
-        "command": "code-explainer.insertComment",
+        "command": "clarify.insertComment",
         "title": "Insert Explanation as Comment",
-        "category": "Code Explainer"
+        "category": "Clarify"
       },
       {
-        "command": "code-explainer.openSettings",
+        "command": "clarify.openSettings",
         "title": "Open Settings",
-        "category": "Code Explainer"
+        "category": "Clarify"
       }
     ],
     "keybindings": [
       {
-        "command": "code-explainer.explain",
+        "command": "clarify.explain",
         "key": "shift+e",
         "when": "editorHasSelection && editorTextFocus"
       }
     ],
     "configuration": {
-      "title": "Code Explainer",
+      "title": "Clarify",
       "properties": {
-        "codeExplainer.openaiApiKey": {
+        "clarify.openaiApiKey": {
           "type": "string",
           "default": "",
           "markdownDescription": "Your OpenAI API key (`sk-...`). **Note:** stored as plain text in settings.json.",
           "order": 1
         },
-        "codeExplainer.model": {
+        "clarify.model": {
           "type": "string",
           "default": "gpt-4o",
           "enum": [
@@ -68,7 +81,7 @@
     "menus": {
       "editor/context": [
         {
-          "command": "code-explainer.insertComment",
+          "command": "clarify.insertComment",
           "when": "editorHasSelection",
           "group": "codeExplainer@1"
         }
