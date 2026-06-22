@@ -43,7 +43,45 @@ export function activate(context: vscode.ExtensionContext): void {
 
       try {
         const code = editor.document.getText(selection);
-        const explanation = await explainCode(code, editor.document.languageId, signal);
+
+        // Build a context window of N lines around the selection
+        const doc = editor.document;
+        const cfg = vscode.workspace.getConfiguration('clarify');
+        const contextLines = cfg.get<number>('contextLines') ?? 50;
+        const contextStartLine = Math.max(0, selection.start.line - contextLines);
+        const contextEndLine = Math.min(doc.lineCount - 1, selection.end.line + contextLines);
+
+        const linesBefore: string[] = [];
+        for (let i = contextStartLine; i < selection.start.line; i++) {
+          linesBefore.push(doc.lineAt(i).text);
+        }
+        const linesAfter: string[] = [];
+        for (let i = selection.end.line + 1; i <= contextEndLine; i++) {
+          linesAfter.push(doc.lineAt(i).text);
+        }
+
+        let contextCode: string | undefined;
+        if (linesBefore.length > 0 || linesAfter.length > 0) {
+          const parts: string[] = [];
+          if (linesBefore.length > 0) { parts.push(linesBefore.join('\n')); }
+          parts.push(`▶\n${code}\n◀`);
+          if (linesAfter.length > 0) { parts.push(linesAfter.join('\n')); }
+          contextCode = parts.join('\n');
+        }
+
+        const explanation = await explainCode(
+          code,
+          editor.document.languageId,
+          signal,
+          (accumulated) => {
+            // Extract the partial "brief" value as it streams into the JSON
+            const match = accumulated.match(/"brief"\s*:\s*"([^"]+)/);
+            if (match?.[1]) {
+              decorations.updateStreaming(editor, selection, match[1]);
+            }
+          },
+          contextCode,
+        );
 
         pendingExplanation = explanation;
         pendingRange = selection;

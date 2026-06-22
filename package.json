@@ -1,9 +1,9 @@
 {
   "name": "clarify",
   "displayName": "Clarify",
-  "description": "AI-powered inline code explanations using OpenAI.",
+  "description": "AI-powered inline code explanations using OpenAI or Claude, with streaming and file context.",
   "publisher": "sakunaharinda",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "license": "MIT",
   "icon": "assets/icon.png",
   "repository": {
@@ -52,11 +52,22 @@
     "configuration": {
       "title": "Clarify",
       "properties": {
+        "clarify.provider": {
+          "type": "string",
+          "default": "openai",
+          "enum": ["openai", "claude"],
+          "enumDescriptions": [
+            "OpenAI — GPT-4o and friends",
+            "Anthropic — Claude models"
+          ],
+          "description": "AI provider to use for explanations.",
+          "order": 1
+        },
         "clarify.openaiApiKey": {
           "type": "string",
           "default": "",
           "markdownDescription": "Your OpenAI API key (`sk-...`). **Note:** stored as plain text in settings.json.",
-          "order": 1
+          "order": 2
         },
         "clarify.model": {
           "type": "string",
@@ -73,8 +84,37 @@
             "GPT-4 Turbo — previous generation flagship",
             "GPT-3.5 Turbo — fastest and cheapest, basic explanations"
           ],
-          "description": "OpenAI model to use for generating explanations.",
-          "order": 2
+          "description": "OpenAI model to use (when provider is openai).",
+          "order": 3
+        },
+        "clarify.anthropicApiKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Your Anthropic API key (`sk-ant-...`). **Note:** stored as plain text in settings.json.",
+          "order": 4
+        },
+        "clarify.claudeModel": {
+          "type": "string",
+          "default": "claude-opus-4-8",
+          "enum": [
+            "claude-opus-4-8",
+            "claude-sonnet-4-6",
+            "claude-haiku-4-5-20251001"
+          ],
+          "enumDescriptions": [
+            "Claude Opus 4.8 — most capable, recommended",
+            "Claude Sonnet 4.6 — balanced speed and quality",
+            "Claude Haiku 4.5 — fastest and cheapest"
+          ],
+          "description": "Claude model to use (when provider is claude).",
+          "order": 5
+        },
+        "clarify.contextLines": {
+          "type": "number",
+          "default": 50,
+          "minimum": 0,
+          "description": "Lines of surrounding file content to include as context when explaining a selection. Set to 0 to send only the selected code.",
+          "order": 6
         }
       }
     },

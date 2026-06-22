@@ -29,6 +29,14 @@ export class DecorationManager {
     }]);
   }
 
+  updateStreaming(editor: vscode.TextEditor, range: vscode.Range, partialBrief: string): void {
+    editor.setDecorations(this.loadingType, []);
+    editor.setDecorations(this.resultType, [{
+      range: new vscode.Range(range.end, range.end),
+      renderOptions: { after: { contentText: `  ↳ ${partialBrief}…` } },
+    }]);
+  }
+
   showExplanation(editor: vscode.TextEditor, range: vscode.Range, brief: string): void {
     this.clear(editor);
     editor.setDecorations(this.resultType, [{
