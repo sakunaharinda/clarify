@@ -1,7 +1,7 @@
 {
   "name": "code-explainer",
   "displayName": "Code Explainer",
-  "description": "AI assistant that helps you to make sense of your code.",
+  "description": "AI assistant that explains your code inline using OpenAI.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.125.0"
@@ -14,10 +14,66 @@
   "contributes": {
     "commands": [
       {
-        "command": "code-explainer.helloWorld",
-        "title": "Hello World"
+        "command": "code-explainer.explain",
+        "title": "Explain Selected Code",
+        "category": "Code Explainer"
+      },
+      {
+        "command": "code-explainer.insertComment",
+        "title": "Insert Explanation as Comment",
+        "category": "Code Explainer"
+      },
+      {
+        "command": "code-explainer.openSettings",
+        "title": "Open Settings",
+        "category": "Code Explainer"
       }
-    ]
+    ],
+    "keybindings": [
+      {
+        "command": "code-explainer.explain",
+        "key": "shift+e",
+        "when": "editorHasSelection && editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "Code Explainer",
+      "properties": {
+        "codeExplainer.openaiApiKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Your OpenAI API key (`sk-...`). **Note:** stored as plain text in settings.json.",
+          "order": 1
+        },
+        "codeExplainer.model": {
+          "type": "string",
+          "default": "gpt-4o",
+          "enum": [
+            "gpt-4o",
+            "gpt-4o-mini",
+            "gpt-4-turbo",
+            "gpt-3.5-turbo"
+          ],
+          "enumDescriptions": [
+            "GPT-4o — best quality, recommended",
+            "GPT-4o Mini — faster and cheaper, good for most code",
+            "GPT-4 Turbo — previous generation flagship",
+            "GPT-3.5 Turbo — fastest and cheapest, basic explanations"
+          ],
+          "description": "OpenAI model to use for generating explanations.",
+          "order": 2
+        }
+      }
+    },
+    "menus": {
+      "editor/context": [
+        {
+          "command": "code-explainer.insertComment",
+          "when": "editorHasSelection",
+          "group": "codeExplainer@1"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
